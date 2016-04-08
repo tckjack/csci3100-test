@@ -17,7 +17,8 @@
         <h1><small>CSCI 4140: Assignment 2</small><br>Youtube Remote</h1>
       </div>
       <div class="visible-md-block visible-lg-block pull-right col-md-2 col-lg-2">
-        <a href="#" class="thumbnail"><img src="images/CSOcamp.png" /></a>
+        <img id="QRcode" src="" />
+        <script>document.write("<img src=\"https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=" + encodeURIComponent(location.href)+ "\" />")</script>
       </div>
       <div class="clearfix"></div>
     </div>
@@ -28,8 +29,8 @@
         <div class="panel panel-success">
           <div class="panel-heading">YouTube Player</div>
           <div class="panel-body">
-            <div class="embed-responsive embed-responsive-16by9">
-              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/Zi9cK-lI190?list=PLf6KPh2-jb29LSVBooXRiNwERMamB8hG5"></iframe>
+            <div class="embed-responsive embed-responsive-16by9" id="player">
+              <!-- <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/Zi9cK-lI190?list=PLf6KPh2-jb29LSVBooXRiNwERMamB8hG5"></iframe> -->
             </div>
           </div>
         </div>
@@ -63,7 +64,8 @@
           <div class="panel-body">
             <div class="list-group">
               <div class="list-group-item clearfix">
-                <a class="dark" href="#">リアルねこあつめ : Google Play GAME WEEK</a>
+                <!-- Video ID : Video Title -->
+                <a class="dark" onclick="displayURL()">リアルねこあつめ : Google Play GAME WEEK</a>
                 <span class="pull-right"><a class="dark" href="#"><i class="fa fa-times-circle"></i></a></span>
               </div>
             </div>
@@ -85,5 +87,6 @@
   </div>
 
 </body>
-
+<script src="js/4140.js"></script>
+<script src="js/player.js"></script>
 </html>
