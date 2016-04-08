@@ -40,21 +40,21 @@
           <div class="panel-heading">YouTube Remote Control</div>
           <div class="panel-body">
             <div class="btn-group-justified">
-              <a class="btn btn-success" href="#"><i class="fa fa-play fa-lg"></i><span class="visible-sm-inline">&emsp;Play</span></a>
-              <a class="btn btn-danger" href="#"><i class="fa fa-pause fa-lg"></i><span class="visible-sm-inline">&emsp;Pause</span></a>
-              <a class="btn btn-warning" href="#"><i class="fa fa-stop fa-lg"></i><span class="visible-sm-inline">&emsp;Stop</span></a>
+              <a class="btn btn-success" onclick="playVideo()"><i class="fa fa-play fa-lg"></i><span class="visible-sm-inline">&emsp;Play</span></a>
+              <a class="btn btn-danger" onclick="pauseVideo()"><i class="fa fa-pause fa-lg"></i><span class="visible-sm-inline">&emsp;Pause</span></a>
+              <a class="btn btn-warning" onclick="stopVideo()"><i class="fa fa-stop fa-lg"></i><span class="visible-sm-inline">&emsp;Stop</span></a>
             </div>
             <br>
             <div class="btn-group-justified">
               <a class="btn btn-info" href="#"><i class="fa fa-fast-backward fa-lg"></i><span class="visible-sm-inline">&emsp;Previous </span></a>
-              <a class="btn btn-info" href="#"><i class="fa fa-backward fa-lg"></i><span class="visible-sm-inline">&emsp;Rewind </span></a>
-              <a class="btn btn-primary" href="#"><i class="fa fa-forward fa-lg"></i><span class="visible-sm-inline">&emsp;Fast Forward </span></a>
+              <a class="btn btn-info" onclick="rewindVideo()"><i class="fa fa-backward fa-lg"></i><span class="visible-sm-inline">&emsp;Rewind </span></a>
+              <a class="btn btn-primary" onclick="fastforwardVideo()"><i class="fa fa-forward fa-lg"></i><span class="visible-sm-inline">&emsp;Fast Forward </span></a>
               <a class="btn btn-primary" href="#"><i class="fa fa-fast-forward fa-lg"></i><span class="visible-sm-inline">&emsp;Next </span></a>
             </div>
             <br>
             <div class="btn-group-justified">
-              <a class="btn btn-warning" href="#"><i class="fa fa-volume-off fa-lg"></i><span class="visible-sm-inline">&emsp;Mute </span></a>
-              <a class="btn btn-warning" href="#"><i class="fa fa-volume-up fa-lg"></i><span class="visible-sm-inline">&emsp;Unmute </span></a>
+              <a class="btn btn-warning" onclick="muteVideo()"><i class="fa fa-volume-off fa-lg"></i><span class="visible-sm-inline">&emsp;Mute </span></a>
+              <a class="btn btn-warning" onclick="unmuteVideo()"><i class="fa fa-volume-up fa-lg"></i><span class="visible-sm-inline">&emsp;Unmute </span></a>
             </div>
           </div>
         </div>
