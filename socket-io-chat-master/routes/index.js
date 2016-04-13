@@ -4,7 +4,7 @@ var router = express.Router();
 
 router.get( '/', function( req, res ) {
 	var id = Math.floor( Math.random() * 10000 );
-	res.redirect( '/' + id );
+	res.redirect( '/session/' + id );
 } );
 
 router.get( '/:id([0-9]+)', function( req, res ) {

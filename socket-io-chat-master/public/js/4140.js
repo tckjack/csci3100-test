@@ -1,42 +1,44 @@
-function getVideoIDFromURL(url)
+var i = 0;
+
+function getVideoIDFromURL()
 {
+  url = document.getElementById('url').value;
+  console.log(url);
   var regExp = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
   var match = url.match(regExp);
-  // console.log( match[ 2 ] );
+
   if(match && match[2].length == 11)
   {
-    return match[2];
+    console.log(match[2]);
+    displayURL(match[2]);
   }
   else
   {
-    return url;
+    console.log(url);
+    displayURL(url);
   }
 }
 
-function displayURL()
+function displayURL(videoId)
 {
-  $('form').submit(function(e)
+  console.log(videoId);
+  // e.preventDefault();
+  var apiKey = 'AIzaSyCIRUOEGf1pJ195U9PTqZbod88jsyYD-hE';
+  // var videoId = $('#video-id').val();
+  var url = 'https://www.googleapis.com/youtube/v3/videos?part=id%2Csnippet&id=' + videoId + '&key=' + apiKey
+    // AJAX GET request
+  $.get(url, function(data)
   {
-    e.preventDefault();
-    var apiKey = $('#key').val();
-    var videoId = $('#video-id').val();
-    var url = 'https://www.googleapis.com/youtube/v3/videos?part=id%2Csnippet&id=' + videoId + '&key=' + apiKey
-      // AJAX GET request
-    $.get(url, function(data)
+    // Check if the video ID is valid
+    if(data.items.length == 0)
     {
-      // Check if the video ID is valid
-      if(data.items.length == 0)
-      {
-        alert('Video not found!');
-        return;
-      }
-			console.log(data);
-      // Retrieve video title from ".items[ 0 ].snippet.title"
-			$('#title').html(data.items[0].snippet.title);
-      $('#id').html(data.items[0].id);
-      // Debug message
-      $('#url').html(url);
-      $('#response').html(JSON.stringify(data));
-    });
+      alert('Video not found!');
+      return;
+    }
+		console.log(data);
+    // Retrieve video title from ".items[ 0 ].snippet.title"
+    i++;
+	  document.getElementById('videolist').innerHTML += '<li class="list-group-item clearfix"><a class="dark" id=\'vid' + i + '\' onclick="displayURL()">' + data.items[0].id + ' : ' + data.items[0].snippet.title + '</a><span class="pull-right"><a class="dark" href="#"><i class="fa fa-times-circle"></i></a></span></li>';
   });
+
 }

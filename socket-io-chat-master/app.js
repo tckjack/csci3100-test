@@ -22,8 +22,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+app.get('/' , function( req, res ) {
+	var id = Math.floor( Math.random() * 10000 );
+	res.redirect( '/session/' + id );
+} );
+
+app.get( '/session/:id([0-9]+)', function( req, res ) {
+	res.sendFile( path.resolve( __dirname + '/views/index.html' ) );
+} );
+// app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

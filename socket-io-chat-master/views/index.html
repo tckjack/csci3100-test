@@ -62,17 +62,17 @@
         <div class="panel panel-warning">
           <div class="panel-heading">Playlist</div>
           <div class="panel-body">
-            <div class="list-group">
-              <div class="list-group-item clearfix">
-                <!-- Video ID : Video Title -->
-                <a class="dark" onclick="displayURL()">リアルねこあつめ : Google Play GAME WEEK</a>
+            <ul id="videolist" class="list-group">
+              <li class="list-group-item clearfix">
+                <a class="dark" id='vid1' onclick="displayURL()">リアルねこあつめ : Google Play GAME WEEK</a>
                 <span class="pull-right"><a class="dark" href="#"><i class="fa fa-times-circle"></i></a></span>
-              </div>
-            </div>
+              </li>
+            </ul>
+
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Enter Video ID or URL">
+              <input type="text" class="form-control" id="url" placeholder="Enter Video ID or URL">
               <span class="input-group-btn">
-                <a class="btn btn-warning" href="#"><i class="fa fa-plus"></i></a>
+                <a class="btn btn-warning" href="#" onclick="getVideoIDFromURL()"><i class="fa fa-plus"></i></a>
               </span>
             </div>
             <br>
@@ -89,8 +89,11 @@
 </body>
 <script src="js/4140.js"></script>
 <script src="js/player.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script>
   // Retrieve room ID
+
   if ( ! Array.prototype.last ) {
     Array.prototype.last = (function() {
       return this[ this.length - 1 ];
