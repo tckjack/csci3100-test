@@ -3,11 +3,33 @@ tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
-var videoid = document.getElementById('vid1').value;
-var id;
+var videoId = getVideoID(playlist[0].videoId);
+var id = window.location.href.split( '/' ).last();
+var i;
+// var socket = io();
+
+function getVideoID(url)
+{
+
+  console.log(url);
+  var regExp = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
+  var match = url.match(regExp);
+
+  if(match && match[2].length == 11)
+  {
+    // console.log(match[2]);
+    return match[2];
+  }
+  else
+  {
+    // console.log(url);
+    return url;
+  }
+}
 
 function onYouTubeIframeAPIReady()
 {
+    console.log(videoId);
     player = new YT.Player('player',
     {
         // height: "100%",
@@ -27,16 +49,18 @@ function onYouTubeIframeAPIReady()
 
 function onPlayerReady(event)
 {
-    event.target.playVideo();
+    // event.target.playVideo();
 }
-var done = false;
+// var done = false;
 
 function onPlayerStateChange(event)
 {
     switch(event.data)
     {
         case YT.PlayerState.ENDED:
-            // Load Next Video
+            var id = playlist[i+1].videoId;
+            player.loadVideoById(id);
+            i++;
             break;
         case YT.PlayerState.PLAYING:
             break;
@@ -57,50 +81,45 @@ function onPlayerStateChange(event)
 
 function stopVideo()
 {
-    player.stopVideo();
+    // player.stopVideo();
+    socket.emit('stopVideo');
 }
 
 function playVideo()
 {
-    player.playVideo();
+    // player.playVideo();
+    socket.emit('playVideo');
 }
 
 function pauseVideo()
 {
-    player.pauseVideo();
+    // player.pauseVideo();
+    socket.emit('pauseVideo');
 }
 
 function muteVideo()
 {
-    player.mute();
+    // player.mute();
+    socket.emit('muteVideo');
 }
 
 function unmuteVideo()
 {
-    player.unMute();
+    // player.unMute();
+    socket.emit('unmuteVideo');
 }
 
 function rewindVideo(){
-  var currentTime = player.getCurrentTime();
-  if(currentTime > 2.0){
-    player.seekTo(currentTime - 2.0, true);
-  }
-  else{
-    player.seekTo(0,true);
-  }
+    socket.emit('rewindVideo');
 }
 
 function fastforwardVideo(){
-  var currentTime = player.getCurrentTime();
-  var duration = player.getDuration();
-  if(currentTime < (duration - 2.0)){
-    player.seekTo(currentTime + 2.0, true);
-  }
-  else{
-    player.seekTo(duration,true);
-  }
+    socket.emit('fastforwardVideo');
 }
 
+function playselectVideo(vid){
+    socket.emit('playselectVideo',vid);
+}
 
 if(!window['YT'])
 {
@@ -125,3 +144,78 @@ window.addEventListener('resize', function()
         player = null;
     }
 });
+
+socket.on( 'stopVideo', function(){
+  player.stopVideo();
+})
+
+socket.on( 'playVideo', function(){
+  if(player !== null){
+    var state = player.getPlayerState();
+    if (state == YT.PlayerState.PAUSED){
+      player.play();
+    }
+    else{
+      var id = playlist[1].videoId;
+      player.loadVideoById(id);
+      i = 1;
+    }
+  }
+
+})
+
+socket.on( 'pauseVideo', function(){
+  if(play !== null){
+    var state = player.getPlayerState();
+    if (state == YT.PlayerState.PLAYING){
+      player.play();
+    }
+  }
+})
+
+socket.on( 'muteVideo', function(){
+  if(play !== null){
+    player.pauseVideo();
+  }
+})
+
+socket.on( 'unmuteVideo', function(){
+  if(play !== null){
+    player.pauseVideo();
+  }
+})
+
+socket.on( 'rewindVideo', function(){
+  if (player !== null){
+    var state = player.getPlayerState();
+    if( state == YT.PlayerState.PLAYING || state == YT.PlayerState.PAUSED){
+      var currentTime = player.getCurrentTime();
+      if(currentTime > 2.0){
+        player.seekTo(currentTime - 2.0, true);
+      }
+      else{
+        player.seekTo(0,true);
+      }
+    }
+  }
+})
+
+socket.on('fastforwardVideo', function(){
+  if (player !== null){
+    var state = player.getPlayerState();
+    if( state == YT.PlayerState.PLAYING || state == YT.PlayerState.PAUSED){
+      var currentTime = player.getCurrentTime();
+      var duration = player.getDuration();
+      if(currentTime < (duration - 2.0)){
+        player.seekTo(currentTime + 2.0, true);
+      }
+      else{
+        player.seekTo(duration,true);
+      }
+    }
+  }
+})
+
+socket.on( 'playselectVideo', function(data){
+
+})

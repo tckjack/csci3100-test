@@ -7,7 +7,7 @@
   <title>CSCI 4140: Assignment 2</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="css/4140.css" media="screen" title="no title" charset="utf-8">
+  <link rel="stylesheet" href="../css/4140.css" media="screen" title="no title" charset="utf-8">
 </head>
 
 <body>
@@ -64,7 +64,11 @@
           <div class="panel-body">
             <ul id="videolist" class="list-group">
               <li class="list-group-item clearfix">
-                <a class="dark" id='vid1' onclick="displayURL()">リアルねこあつめ : Google Play GAME WEEK</a>
+                <a class="dark" id='vid1' onclick="displayURL()">Zi9cK-lI190 : リアルねこあつめ : Google Play GAME WEEK</a>
+                <span class="pull-right"><a class="dark" href="#"><i class="fa fa-times-circle"></i></a></span>
+              </li>
+              <li class="list-group-item clearfix">
+                <a class="dark" id='vid2' onclick="displayURL()">-Cly__c-wBc : 準備中全碟改詞 06. 胖虎的自白 - 挽歌之聲 (原曲：喜歡一個人)</a>
                 <span class="pull-right"><a class="dark" href="#"><i class="fa fa-times-circle"></i></a></span>
               </li>
             </ul>
@@ -87,13 +91,12 @@
   </div>
 
 </body>
-<script src="js/4140.js"></script>
-<script src="js/player.js"></script>
+<script src="../js/4140.js"></script>
+<script src="../js/player.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
   // Retrieve room ID
-
   if ( ! Array.prototype.last ) {
     Array.prototype.last = (function() {
       return this[ this.length - 1 ];
@@ -105,16 +108,6 @@
   var socket = io();
   socket.emit( 'register', id );
 
-  // Chat room logic
-  var $m = $( '#m' );
-  var $messages = $( '#messages' );
-  $( '#form' ).on( 'submit', function( e ) {
-    e.preventDefault();
-    socket.emit( 'chat', $m.val() );
-    $m.val( '' );
-  } );
-  socket.on( 'chat', function( data ) {
-    $messages.append( '<li>' + data + '</li>' );
-  } );
+  socket.emit( 'getPlayList' , id);
 </script>
 </html>

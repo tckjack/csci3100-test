@@ -76,7 +76,7 @@ function onError(error) {
       throw error;
   }
 }
-
+var playlist = {};
 /**
  * Event listener for HTTP server "listening" event.
  */
@@ -104,8 +104,47 @@ io.on( 'connection', function( socket ) {
 		socket.join( data );
 	} );
 
-	socket.on( 'chat', function( data ) {
-		console.log( 'Message: ' + data );
-		io.to( id ).emit( 'chat', data );
-	} );
+  socket.on( 'getPlayList', id){
+    var sessionPlaylist = [];
+    for(var i = 0; i < playlist.length(); i++){
+      sessionPlaylist.push(playlist[i]);
+    }
+    socket.emit('getPlayList', sessionPlaylist);
+  }
+
+  socket.on( 'stopVideo', function(){
+    console.log('stop video tgt');
+    socket.emit('stopVideo');
+  })
+
+  socket.on( 'playVideo', function(){
+    console.log('play video tgt');
+    socket.emit('playVideo');
+  })
+
+  socket.on( 'pauseVideo', function(){
+    console.log('pause video tgt');
+    socket.emit('pauseVideo');
+  })
+
+  socket.on( 'muteVideo', function(){
+    console.log('pause video tgt');
+    socket.emit('muteVideo');
+  })
+
+  socket.on( 'unmuteVideo', function(){
+    console.log('pause video tgt');
+    socket.emit('unmuteVideo');
+  })
+
+  socket.on( 'fastforwardVideo', function(){
+    console.log('pause video tgt');
+    socket.emit('fastforwardVideo');
+  })
+
+  socket.on( 'playselectVideo', function(data){
+    console.log('play selecte video tgt, vid:' + data);
+    socket.emit('playselectVideo',data);
+  })
+
 } );

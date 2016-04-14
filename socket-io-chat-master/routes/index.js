@@ -7,7 +7,7 @@ router.get( '/', function( req, res ) {
 	res.redirect( '/session/' + id );
 } );
 
-router.get( '/:id([0-9]+)', function( req, res ) {
+router.get( '/session/:id([0-9]+)', function( req, res ) {
 	res.sendFile( path.resolve( __dirname + '/../views/index.html' ) );
 } );
 

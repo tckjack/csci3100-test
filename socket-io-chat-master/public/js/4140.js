@@ -1,5 +1,6 @@
 var i = 0;
 
+
 function getVideoIDFromURL()
 {
   url = document.getElementById('url').value;
@@ -38,7 +39,12 @@ function displayURL(videoId)
 		console.log(data);
     // Retrieve video title from ".items[ 0 ].snippet.title"
     i++;
-	  document.getElementById('videolist').innerHTML += '<li class="list-group-item clearfix"><a class="dark" id=\'vid' + i + '\' onclick="displayURL()">' + data.items[0].id + ' : ' + data.items[0].snippet.title + '</a><span class="pull-right"><a class="dark" href="#"><i class="fa fa-times-circle"></i></a></span></li>';
+    var videoId = data.items[0].id;
+    var videoName = data.items[0].snippet.title;
+    var video = [id,videoId,videoName];
+    };
+    // playlist.push(video);
+	  // document.getElementById('videolist').innerHTML += '<li class="list-group-item clearfix"><a class="dark" id=\'vid' + i + '\' onclick="playvideo('+ i +')">' + videoId + ' : ' + videoName + '</a><span class="pull-right"><a class="dark" href="#"><i class="fa fa-times-circle"></i></a></span></li>';
   });
 
 }
