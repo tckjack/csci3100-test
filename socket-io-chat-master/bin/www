@@ -76,7 +76,7 @@ function onError(error) {
       throw error;
   }
 }
-var playlist = {};
+var playlist = [];
 /**
  * Event listener for HTTP server "listening" event.
  */
@@ -107,7 +107,7 @@ io.on( 'connection', function( socket ) {
   socket.on( 'getPlayList', id){
     var sessionPlaylist = [];
     for(var i = 0; i < playlist.length(); i++){
-      sessionPlaylist.push(playlist[i]);
+
     }
     socket.emit('getPlayList', sessionPlaylist);
   }
