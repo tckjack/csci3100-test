@@ -3,148 +3,159 @@
 /**
  * Module dependencies.
  */
-
 var app = require('../app');
 var debug = require('debug')('socket-io-chat:server');
 var http = require('http');
-
 /**
  * Get port from environment and store in Express.
  */
-
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-
 /**
  * Create HTTP server.
  */
-
 var server = http.createServer(app);
-
 /**
  * Listen on provided port, on all network interfaces.
  */
-
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-
 /**
  * Normalize a port into a number, string, or false.
  */
-
-function normalizePort(val) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
+function normalizePort(val)
+{
+    var port = parseInt(val, 10);
+    if(isNaN(port))
+    {
+        // named pipe
+        return val;
+    }
+    if(port >= 0)
+    {
+        // port number
+        return port;
+    }
+    return false;
 }
-
 /**
  * Event listener for HTTP server "error" event.
  */
-
-function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+function onError(error)
+{
+    if(error.syscall !== 'listen')
+    {
+        throw error;
+    }
+    var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+    // handle specific listen errors with friendly messages
+    switch(error.code)
+    {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
 }
 var playlist = [];
 /**
  * Event listener for HTTP server "listening" event.
  */
-
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+function onListening()
+{
+    var addr = server.address();
+    var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+    debug('Listening on ' + bind);
 }
-
-var io = require( 'socket.io' )( server );
-io.on( 'connection', function( socket ) {
-	var id;
-
-	console.log( 'New user connected' );
-	socket.on( 'disconnect', function() {
-		console.log( 'User disconnected' );
-	} );
-
-	socket.on( 'register', function( data ) {
-		console.log( 'User registered. Room ID = ' + data );
-		id = data;
-		socket.join( data );
-	} );
-
-  socket.on( 'getPlayList', id){
-    var sessionPlaylist = [];
-    for(var i = 0; i < playlist.length(); i++){
-
-    }
-    socket.emit('getPlayList', sessionPlaylist);
-  }
-
-  socket.on( 'stopVideo', function(){
-    console.log('stop video tgt');
-    socket.emit('stopVideo');
-  })
-
-  socket.on( 'playVideo', function(){
-    console.log('play video tgt');
-    socket.emit('playVideo');
-  })
-
-  socket.on( 'pauseVideo', function(){
-    console.log('pause video tgt');
-    socket.emit('pauseVideo');
-  })
-
-  socket.on( 'muteVideo', function(){
-    console.log('pause video tgt');
-    socket.emit('muteVideo');
-  })
-
-  socket.on( 'unmuteVideo', function(){
-    console.log('pause video tgt');
-    socket.emit('unmuteVideo');
-  })
-
-  socket.on( 'fastforwardVideo', function(){
-    console.log('pause video tgt');
-    socket.emit('fastforwardVideo');
-  })
-
-  socket.on( 'playselectVideo', function(data){
-    console.log('play selecte video tgt, vid:' + data);
-    socket.emit('playselectVideo',data);
-  })
-
-} );
+var io = require('socket.io')(server);
+io.on('connection', function(socket)
+{
+    var id;
+    console.log('New user connected');
+    socket.on('disconnect', function()
+    {
+        console.log('User disconnected');
+    });
+    socket.on('register', function(data)
+    {
+        console.log('User registered. Room ID = ' + data);
+        id = data;
+        socket.join(data);
+    });
+    socket.on('getPlayList', function(data)
+    {
+        var sessionPlaylist = [];
+        for(var i = 0; i < playlist.length; i++)
+        {
+            if(playlist[i].id == data)
+            {
+                sessionPlaylist.push(playlist[i]);
+            }
+        }
+        io.to(id).emit('getPlayList', sessionPlaylist);
+    });
+    socket.on('updatePlayList', function(data)
+    {
+        console.log('updatePlayList:\n' + data);
+        var newElement = {
+            id: data[0],
+            videoId: data[1],
+            videoName: data[2],
+        }
+        playlist.push(newElement);
+        var sessionPlaylist = [];
+        console.log('playlist:\n' + playlist);
+        for(var i = 0; i < playlist.length; i++)
+        {
+            if(playlist[i].id == data[0])
+            {
+                // console.log();
+                sessionPlaylist.push(playlist[i]);
+            }
+        }
+        console.log(sessionPlaylist);
+        io.to(id).emit('getPlayList', sessionPlaylist);
+    });
+    socket.on('stopVideo', function()
+    {
+        console.log('stop video tgt');
+        io.to(id).emit('stopVideo');
+    });
+    socket.on('playVideo', function(data)
+    {
+        console.log('play video tgt');
+        io.to(id).emit('playVideo');
+    });
+    socket.on('pauseVideo', function()
+    {
+        console.log('pause video tgt');
+        io.to(id).emit('pauseVideo');
+    });
+    socket.on('muteVideo', function()
+    {
+        console.log('pause video tgt');
+        io.to(id).emit('muteVideo');
+    });
+    socket.on('unmuteVideo', function()
+    {
+        console.log('pause video tgt');
+        io.to(id).emit('unmuteVideo');
+    });
+    socket.on('fastforwardVideo', function()
+    {
+        console.log('pause video tgt');
+        io.to(id).emit('fastforwardVideo');
+    });
+    socket.on('playselectVideo', function(data)
+    {
+        console.log('play selecte video tgt, vid:' + data);
+        io.to(id).emit('playselectVideo', data);
+    });
+});
