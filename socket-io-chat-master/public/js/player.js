@@ -5,7 +5,7 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
 var videoId;
 var id = window.location.href.split('/').last();
-var i;
+var current;
 
 function getVideoID(url)
 {
@@ -26,7 +26,6 @@ function getVideoID(url)
 
 function onYouTubeIframeAPIReady()
 {
-
     player = new YT.Player('player',
     {
         // height: "100%",
@@ -54,9 +53,9 @@ function onPlayerStateChange(event)
     switch(event.data)
     {
         case YT.PlayerState.ENDED:
-            var id = playlist[i + 1].videoId;
+            var id = playlist[current + 1].videoId;
             player.loadVideoById(id);
-            i++;
+            current++;
             break;
         case YT.PlayerState.PLAYING:
             break;
@@ -68,11 +67,6 @@ function onPlayerStateChange(event)
             break;
         default:
     }
-    // if(event.data == YT.PlayerState.PLAYING && !done)
-    // {
-    //     setTimeout(stopVideo, 6000);
-    //     done = true;
-    // }
 }
 
 function stopVideo()
@@ -84,7 +78,7 @@ function stopVideo()
 function playVideo()
 {
     // player.playVideo();
-    socket.emit('playVideo',id);
+    socket.emit('playVideo', id);
 }
 
 function pauseVideo()
@@ -115,10 +109,31 @@ function fastforwardVideo()
     socket.emit('fastforwardVideo');
 }
 
+function previousVideo()
+{
+    socket.emit('previousVideo');
+}
+
+function nextVideo()
+{
+    socket.emit('nextVideo');
+}
+
 function playselectVideo(vid)
 {
     socket.emit('playselectVideo', vid);
 }
+
+function removeVideo(vid)
+{
+    socket.emit('removeVideo', vid);
+}
+
+function clearAll()
+{
+    socket.emit('clearAll');
+}
+
 if(!window['YT'])
 {
     var YT = {
@@ -139,111 +154,5 @@ window.addEventListener('resize', function()
     {
         player.destroy(); // Destroy the video player
         player = null;
-    }
-});
-socket.on('stopVideo', function()
-{
-    player.stopVideo();
-});
-socket.on('playVideo', function()
-{
-    console.log('playVideo Recieve');
-    if(player !== null)
-    {
-        var state = player.getPlayerState();
-        if(state == YT.PlayerState.PAUSED)
-        {
-            player.play();
-        }
-        else
-        {
-            var id = playlist[0].videoId;
-            player.loadVideoById(id);
-            i = 1;
-        }
-    }
-});
-socket.on('pauseVideo', function()
-{
-    if(play !== null)
-    {
-        var state = player.getPlayerState();
-        if(state == YT.PlayerState.PLAYING)
-        {
-            player.pauseVideo();
-        }
-    }
-});
-socket.on('muteVideo', function()
-{
-    if(play !== null)
-    {
-        player.muteVideo();
-    }
-});
-socket.on('unmuteVideo', function()
-{
-    if(play !== null)
-    {
-        player.pauseVideo();
-    }
-});
-socket.on('rewindVideo', function()
-{
-    if(player !== null)
-    {
-        var state = player.getPlayerState();
-        if(state == YT.PlayerState.PLAYING || state == YT.PlayerState.PAUSED)
-        {
-            var currentTime = player.getCurrentTime();
-            if(currentTime > 2.0)
-            {
-                player.seekTo(currentTime - 2.0, true);
-            }
-            else
-            {
-                player.seekTo(0, true);
-            }
-        }
-    }
-});
-socket.on('fastforwardVideo', function()
-{
-    if(player !== null)
-    {
-        var state = player.getPlayerState();
-        if(state == YT.PlayerState.PLAYING || state == YT.PlayerState.PAUSED)
-        {
-            var currentTime = player.getCurrentTime();
-            var duration = player.getDuration();
-            if(currentTime < (duration - 2.0))
-            {
-                player.seekTo(currentTime + 2.0, true);
-            }
-            else
-            {
-                player.seekTo(duration, true);
-            }
-        }
-    }
-});
-socket.on('playselectVideo', function(data)
-{
-    if(player !== null)
-    {
-        for(var i = 0; i < playlist; i++)
-        {}
-    }
-});
-
-socket.on('getPlayList', function(data) {
-    playlist = data;
-    console.log(data);
-    document.getElementById('videolist').innerHTML = "";
-    for (var i = 0; i < data.length; i++) {
-        videoId = data[i].videoId;
-        videoName = data[i].videoName;
-        document.getElementById('videolist').innerHTML += '<li class="list-group-item clearfix"><a class="dark" id=\'vid' + i + '\' onclick="playvideo(' + i + ')">' + videoId + ' : ' + videoName +
-            '</a><span class="pull-right"><a class="dark" ><i class="fa fa-times-circle"></i></a></span></li>';
     }
 });

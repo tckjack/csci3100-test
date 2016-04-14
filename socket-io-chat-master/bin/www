@@ -94,7 +94,7 @@ io.on('connection', function(socket)
         var sessionPlaylist = [];
         for(var i = 0; i < playlist.length; i++)
         {
-            if(playlist[i].id == data)
+            if(playlist[i].id == id)
             {
                 sessionPlaylist.push(playlist[i]);
             }
@@ -111,12 +111,11 @@ io.on('connection', function(socket)
         }
         playlist.push(newElement);
         var sessionPlaylist = [];
-        console.log('playlist:\n' + playlist);
+        // console.log(playlist);
         for(var i = 0; i < playlist.length; i++)
         {
-            if(playlist[i].id == data[0])
+            if(playlist[i].id == id)
             {
-                // console.log();
                 sessionPlaylist.push(playlist[i]);
             }
         }
@@ -157,5 +156,51 @@ io.on('connection', function(socket)
     {
         console.log('play selecte video tgt, vid:' + data);
         io.to(id).emit('playselectVideo', data);
+    });
+    socket.on('removeVideo', function(data)
+    {
+        // console.log('remove select video ,vid:' + data);
+        for(var i = 0; i < playlist.length; i++)
+        {
+            if(playlist[i].videoId === data)
+            {
+                playlist.splice(i, 1);
+                console.log('remove select video ,vid:' + data);
+                break;
+            }
+        }
+        console.log(playlist);
+        var sessionPlaylist = [];
+        for(var i = 0; i < playlist.length; i++)
+        {
+            if(playlist[i].id == id)
+            {
+                sessionPlaylist.push(playlist[i]);
+            }
+        }
+        console.log(sessionPlaylist);
+        io.to(id).emit('getPlayList', sessionPlaylist);
+    });
+    socket.on('clearAll', function()
+    {
+        for(var i = 0; i < playlist.length; i++)
+        {
+            if(playlist[i].id === id)
+            {
+                playlist.splice(i, 1);
+                // console.log('remove select video ,vid:');
+            }
+        }
+        console.log(playlist);
+        var sessionPlaylist = [];
+        for(var i = 0; i < playlist.length; i++)
+        {
+            if(playlist[i].id == id)
+            {
+                sessionPlaylist.push(playlist[i]);
+            }
+        }
+        console.log(sessionPlaylist);
+        io.to(id).emit('getPlayList', sessionPlaylist);
     });
 });

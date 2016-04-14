@@ -34,7 +34,6 @@ function displayURL(videoId)
         }
         // console.log(data);
         // Retrieve video title from ".items[ 0 ].snippet.title"
-        i++;
         var videoId = data.items[0].id;
         var videoName = data.items[0].snippet.title;
         var video = [id, videoId, videoName];

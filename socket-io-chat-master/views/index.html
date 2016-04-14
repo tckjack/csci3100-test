@@ -49,10 +49,10 @@
                         </div>
                         <br>
                         <div class="btn-group-justified">
-                            <a class="btn btn-info" ><i class="fa fa-fast-backward fa-lg"></i><span class="visible-sm-inline">&emsp;Previous </span></a>
+                            <a class="btn btn-info" onclick="previousVideo()"><i class="fa fa-fast-backward fa-lg"></i><span class="visible-sm-inline">&emsp;Previous </span></a>
                             <a class="btn btn-info" onclick="rewindVideo()"><i class="fa fa-backward fa-lg"></i><span class="visible-sm-inline">&emsp;Rewind </span></a>
                             <a class="btn btn-primary" onclick="fastforwardVideo()"><i class="fa fa-forward fa-lg"></i><span class="visible-sm-inline">&emsp;Fast Forward </span></a>
-                            <a class="btn btn-primary" ><i class="fa fa-fast-forward fa-lg"></i><span class="visible-sm-inline">&emsp;Next </span></a>
+                            <a class="btn btn-primary" onclick="nextVideo()"><i class="fa fa-fast-forward fa-lg"></i><span class="visible-sm-inline">&emsp;Next </span></a>
                         </div>
                         <br>
                         <div class="btn-group-justified">
@@ -68,44 +68,25 @@
                         <ul id="videolist" class="list-group">
 
                         </ul>
-
                         <div class="input-group">
                             <input type="text" class="form-control" id="url" placeholder="Enter Video ID or URL">
                             <span class="input-group-btn">
-                <a class="btn btn-warning"  onclick="getVideoIDFromURL()"><i class="fa fa-plus"></i></a>
-              </span>
+                              <a class="btn btn-warning"  onclick="getVideoIDFromURL()"><i class="fa fa-plus"></i></a>
+                            </span>
                         </div>
                         <br>
                         <div class="btn-group-justified">
-                            <a class="btn btn-info" ><span class="text-center">Clear All</span></a>
+                            <a class="btn btn-info" onclick="clearAll()"><span class="text-center">Clear All</span></a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
-
 </body>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script>
-    var playlist;
-    // Retrieve room ID
-    if (!Array.prototype.last) {
-        Array.prototype.last = (function() {
-            return this[this.length - 1];
-        });
-    }
-    var id = window.location.href.split('/').last();
-
-    // Register
-    var socket = io();
-    socket.emit('register', id);
-
-    socket.emit('getPlayList', id);
-
-</script>
+<script src="../js/action.js"></script>
 <script src="../js/4140.js"></script>
 <script src="../js/player.js"></script>
 
