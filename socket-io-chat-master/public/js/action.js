@@ -12,7 +12,6 @@ var id = window.location.href.split('/').last();
 var socket = io();
 socket.emit('register', id);
 socket.emit('getPlayList', id);
-
 socket.on('stopVideo', function()
 {
     if(player !== null)
@@ -108,22 +107,35 @@ socket.on('fastforwardVideo', function()
 });
 socket.on('previousVideo', function()
 {
-    if(id != 0)
+    if(playlist[0].videoId != playlist[current].videoId)
     {
-        var id = playlist[current - 1].videoId;
-        player.loadVideoById(id);
-        current--;
+        var state = player.getPlayerState();
+        console.log('state : ' + state);
+        if(state == YT.PlayerState.PLAYING || state == YT.PlayerState.PAUSED)
+        {
+            var id = playlist[current - 1].videoId;
+            player.loadVideoById(id);
+            current--;
+        }
     }
 });
+
 socket.on('nextVideo', function()
 {
-    if(id != (playlist.length - 1))
+    if(playlist[playlist.length - 1].videoId != playlist[current].videoId)
     {
-        var id = playlist[current + 1].videoId;
-        player.loadVideoById(id);
-        current++;
+        var state = player.getPlayerState();
+        console.log('state : ' + state);
+
+        if(state == YT.PlayerState.PLAYING || state == YT.PlayerState.PAUSED)
+        {
+            var id = playlist[current + 1].videoId;
+            player.loadVideoById(id);
+            current++;
+        }
     }
 });
+
 socket.on('playselectVideo', function(data)
 {
     console.log('play select video recieve:' + data);
@@ -141,10 +153,11 @@ socket.on('playselectVideo', function(data)
         }
     }
 });
+
 socket.on('getPlayList', function(data)
 {
     playlist = data;
-    // console.log(data);
+    console.log('get playlist\n' + data);
     document.getElementById('url').value = "";
     document.getElementById('videolist').innerHTML = "";
     for(var i = 0; i < data.length; i++)
