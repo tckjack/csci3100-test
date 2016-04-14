@@ -119,14 +119,12 @@ socket.on('previousVideo', function()
         }
     }
 });
-
 socket.on('nextVideo', function()
 {
     if(playlist[playlist.length - 1].videoId != playlist[current].videoId)
     {
         var state = player.getPlayerState();
         console.log('state : ' + state);
-
         if(state == YT.PlayerState.PLAYING || state == YT.PlayerState.PAUSED)
         {
             var id = playlist[current + 1].videoId;
@@ -135,7 +133,6 @@ socket.on('nextVideo', function()
         }
     }
 });
-
 socket.on('playselectVideo', function(data)
 {
     console.log('play select video recieve:' + data);
@@ -153,7 +150,6 @@ socket.on('playselectVideo', function(data)
         }
     }
 });
-
 socket.on('getPlayList', function(data)
 {
     playlist = data;

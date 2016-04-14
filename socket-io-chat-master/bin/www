@@ -124,47 +124,47 @@ io.on('connection', function(socket)
     });
     socket.on('stopVideo', function()
     {
-        console.log('['+ id +']stop video tgt');
+        console.log('[' + id + ']stop video tgt');
         io.to(id).emit('stopVideo');
     });
     socket.on('playVideo', function(data)
     {
-        console.log('['+ id +']play video tgt');
+        console.log('[' + id + ']play video tgt');
         io.to(id).emit('playVideo');
     });
     socket.on('pauseVideo', function()
     {
-        console.log('['+ id +']pause video tgt');
+        console.log('[' + id + ']pause video tgt');
         io.to(id).emit('pauseVideo');
     });
     socket.on('muteVideo', function()
     {
-        console.log('['+ id +']pause video tgt');
+        console.log('[' + id + ']pause video tgt');
         io.to(id).emit('muteVideo');
     });
     socket.on('unmuteVideo', function()
     {
-        console.log('['+ id +']pause video tgt');
+        console.log('[' + id + ']pause video tgt');
         io.to(id).emit('unmuteVideo');
     });
     socket.on('previousVideo', function()
     {
-        console.log('['+ id +']previous video tgt');
+        console.log('[' + id + ']previous video tgt');
         io.to(id).emit('previousVideo');
     });
     socket.on('nextVideo', function()
     {
-        console.log('['+ id +']next video tgt');
+        console.log('[' + id + ']next video tgt');
         io.to(id).emit('nextVideo');
     });
     socket.on('fastforwardVideo', function()
     {
-        console.log('['+ id +']pause video tgt');
+        console.log('[' + id + ']pause video tgt');
         io.to(id).emit('fastforwardVideo');
     });
     socket.on('playselectVideo', function(data)
     {
-        console.log('['+ id +']play selecte video tgt, vid:' + data);
+        console.log('[' + id + ']play selecte video tgt, vid:' + data);
         io.to(id).emit('playselectVideo', data);
     });
     socket.on('removeVideo', function(data)
@@ -175,7 +175,7 @@ io.on('connection', function(socket)
             if(playlist[i].videoId === data)
             {
                 playlist.splice(i, 1);
-                console.log('['+ id +']remove select video ,vid:' + data);
+                console.log('[' + id + ']remove select video ,vid:' + data);
                 break;
             }
         }
@@ -202,7 +202,7 @@ io.on('connection', function(socket)
                 // console.log('remove select video ,vid:');
             }
         }
-        console.log('['+ id +']Clear All playlist');
+        console.log('[' + id + ']Clear All playlist');
         var sessionPlaylist = [];
         for(var i = 0; i < playlist.length; i++)
         {

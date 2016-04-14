@@ -26,22 +26,23 @@ function getVideoID(url)
 
 function onYouTubeIframeAPIReady()
 {
-    if(window.innerWidth >= 992){
-      player = new YT.Player('player',
-      {
-          // height: "100%",
-          width: "100%",
-          playerVars:
-          {
-              'controls': 0
-          },
-          // videoId: ,
-          events:
-          {
-              'onReady': onPlayerReady,
-              'onStateChange': onPlayerStateChange
-          }
-      });
+    if(window.innerWidth >= 992)
+    {
+        player = new YT.Player('player',
+        {
+            // height: "100%",
+            width: "100%",
+            playerVars:
+            {
+                'controls': 0
+            },
+            // videoId: ,
+            events:
+            {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
     }
 }
 
@@ -134,9 +135,8 @@ function removeVideo(vid)
 function clearAll()
 {
     socket.emit('clearAll');
+    socket.emit('stopVideo');
 }
-
-
 window.addEventListener('resize', function()
 {
     console.log(window.innerWidth);
