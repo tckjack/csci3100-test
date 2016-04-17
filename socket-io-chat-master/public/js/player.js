@@ -149,7 +149,10 @@ window.addEventListener('resize', function()
     }
     else
     {
-        player.destroy(); // Destroy the video player
-        player = null;
+        if(player !== null)
+        {
+            player.destroy(); // Destroy the video player
+            player = null;
+        }
     }
 });

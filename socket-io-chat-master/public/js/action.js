@@ -154,6 +154,11 @@ socket.on('getPlayList', function(data)
 {
     playlist = data;
     console.log('get playlist\n' + data);
+    if(player !== null){
+      var currentPlayId = player.getVideoData()['video_id'];
+      console.log(currentPlayId);
+      socket.emit('updateCurrent',currentPlayId);
+    }
     document.getElementById('url').value = "";
     document.getElementById('videolist').innerHTML = "";
     for(var i = 0; i < data.length; i++)
@@ -162,4 +167,7 @@ socket.on('getPlayList', function(data)
         videoName = data[i].videoName;
         document.getElementById('videolist').innerHTML += '<li class="list-group-item clearfix"><a class="dark" id=\'vid' + i + '\' onclick="playselectVideo(\'' + videoId + '\')">' + videoId + ' : ' + videoName + '</a><span class="pull-right"><a class="dark" onclick=removeVideo(\'' + videoId + '\')><i class="fa fa-times-circle"></i></a></span></li>';
     }
+});
+socket.on('updateCurrent',function(data){
+    current = data;
 });

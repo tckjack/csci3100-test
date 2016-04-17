@@ -214,4 +214,21 @@ io.on('connection', function(socket)
         console.log(sessionPlaylist);
         io.to(id).emit('getPlayList', sessionPlaylist);
     });
+    socket.on('updateCurrent',function(data){
+      var sessionPlaylist = [];
+      var count = 0;
+      for(var i = 0; i < playlist.length; i++)
+      {
+          if(playlist[i].id == id)
+          {
+              if(playlist[i].videoId == data){
+                break;
+              }
+              else{
+                count++;
+              }
+          }
+      }
+      io.to(id).emit('updateCurrent',count);
+    });
 });
