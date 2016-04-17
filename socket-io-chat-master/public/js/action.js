@@ -31,7 +31,7 @@ socket.on('playVideo', function()
         }
         else
         {
-            if(playlist !== null)
+            if(playlist.length != 0)
             {
                 var id = playlist[0].videoId;
                 player.loadVideoById(id);
