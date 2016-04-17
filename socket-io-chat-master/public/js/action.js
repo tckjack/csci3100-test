@@ -154,7 +154,7 @@ socket.on('getPlayList', function(data)
 {
     playlist = data;
     console.log('get playlist\n' + data);
-    if(player !== null){
+    if(player !== null || player !== undefined){
       var currentPlayId = player.getVideoData()['video_id'];
       console.log(currentPlayId);
       socket.emit('updateCurrent',currentPlayId);
