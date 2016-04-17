@@ -14,7 +14,7 @@ socket.emit('register', id);
 socket.emit('getPlayList', id);
 socket.on('stopVideo', function()
 {
-    if(player !== null)
+    if(player)
     {
         player.stopVideo();
     }
@@ -22,12 +22,15 @@ socket.on('stopVideo', function()
 socket.on('playVideo', function()
 {
     console.log('playVideo Recieve');
-    if(player !== null)
+    if(player)
     {
         var state = player.getPlayerState();
         if(state == YT.PlayerState.PAUSED)
         {
             player.playVideo();
+        }
+        else if(state == YT.PlayerState.PLAYING){
+            
         }
         else
         {
@@ -43,7 +46,7 @@ socket.on('playVideo', function()
 socket.on('pauseVideo', function()
 {
     console.log('pause recieve');
-    if(player !== null)
+    if(player)
     {
         var state = player.getPlayerState();
         if(state == YT.PlayerState.PLAYING)
@@ -54,21 +57,21 @@ socket.on('pauseVideo', function()
 });
 socket.on('muteVideo', function()
 {
-    if(player !== null)
+    if(player)
     {
         player.mute();
     }
 });
 socket.on('unmuteVideo', function()
 {
-    if(player !== null)
+    if(player)
     {
         player.unMute();
     }
 });
 socket.on('rewindVideo', function()
 {
-    if(player !== null)
+    if(player)
     {
         var state = player.getPlayerState();
         if(state == YT.PlayerState.PLAYING || state == YT.PlayerState.PAUSED)
@@ -87,7 +90,7 @@ socket.on('rewindVideo', function()
 });
 socket.on('fastforwardVideo', function()
 {
-    if(player !== null)
+    if(player)
     {
         var state = player.getPlayerState();
         if(state == YT.PlayerState.PLAYING || state == YT.PlayerState.PAUSED)
@@ -107,36 +110,42 @@ socket.on('fastforwardVideo', function()
 });
 socket.on('previousVideo', function()
 {
-    if(playlist[0].videoId != playlist[current].videoId)
+    if(playlist.length != 0 && player)
     {
-        var state = player.getPlayerState();
-        console.log('state : ' + state);
-        if(state == YT.PlayerState.PLAYING || state == YT.PlayerState.PAUSED)
+        if(playlist[0].videoId != playlist[current].videoId)
         {
-            var id = playlist[current - 1].videoId;
-            player.loadVideoById(id);
-            current--;
+            var state = player.getPlayerState();
+            console.log('state : ' + state);
+            if(state == YT.PlayerState.PLAYING || state == YT.PlayerState.PAUSED)
+            {
+                var id = playlist[current - 1].videoId;
+                player.loadVideoById(id);
+                current--;
+            }
         }
     }
 });
 socket.on('nextVideo', function()
 {
-    if(playlist[playlist.length - 1].videoId != playlist[current].videoId)
+    if(playlist.length != 0 && player)
     {
-        var state = player.getPlayerState();
-        console.log('state : ' + state);
-        if(state == YT.PlayerState.PLAYING || state == YT.PlayerState.PAUSED)
+        if(playlist[playlist.length - 1].videoId != playlist[current].videoId)
         {
-            var id = playlist[current + 1].videoId;
-            player.loadVideoById(id);
-            current++;
+            var state = player.getPlayerState();
+            console.log('state : ' + state);
+            if(state == YT.PlayerState.PLAYING || state == YT.PlayerState.PAUSED)
+            {
+                var id = playlist[current + 1].videoId;
+                player.loadVideoById(id);
+                current++;
+            }
         }
     }
 });
 socket.on('playselectVideo', function(data)
 {
     console.log('play select video recieve:' + data);
-    if(player !== null)
+    if(player)
     {
         for(var i = 0; i < playlist.length; i++)
         {
@@ -154,10 +163,11 @@ socket.on('getPlayList', function(data)
 {
     playlist = data;
     console.log('get playlist\n' + data);
-    if(player !== null || player !== undefined){
-      var currentPlayId = player.getVideoData()['video_id'];
-      console.log(currentPlayId);
-      socket.emit('updateCurrent',currentPlayId);
+    if(player)
+    {
+        var currentPlayId = player.getVideoData()['video_id'];
+        console.log(currentPlayId);
+        socket.emit('updateCurrent', currentPlayId);
     }
     document.getElementById('url').value = "";
     document.getElementById('videolist').innerHTML = "";
@@ -168,6 +178,7 @@ socket.on('getPlayList', function(data)
         document.getElementById('videolist').innerHTML += '<li class="list-group-item clearfix"><a class="dark" id=\'vid' + i + '\' onclick="playselectVideo(\'' + videoId + '\')">' + videoId + ' : ' + videoName + '</a><span class="pull-right"><a class="dark" onclick=removeVideo(\'' + videoId + '\')><i class="fa fa-times-circle"></i></a></span></li>';
     }
 });
-socket.on('updateCurrent',function(data){
+socket.on('updateCurrent', function(data)
+{
     current = data;
 });

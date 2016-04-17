@@ -149,7 +149,7 @@ window.addEventListener('resize', function()
     }
     else
     {
-        if(player !== null)
+        if(player)
         {
             player.destroy(); // Destroy the video player
             player = null;
