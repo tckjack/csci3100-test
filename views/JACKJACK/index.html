@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>CSCI 4140: Assignment 2</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/4140.css" media="screen" title="no title" charset="utf-8">
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header">
+            <div class="pull-left col-md-10 col-lg-10">
+                <h1><small>CSCI 4140: Assignment 2</small><br>Youtube Remote</h1>
+            </div>
+            <div class="visible-md-block visible-lg-block pull-right col-md-2 col-lg-2">
+                <img id="QRcode" src="" />
+                <script>
+                    document.write("<img src=\"https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=" + encodeURIComponent(location.href) + "\" />")
+
+                </script>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="visible-md-block visible-lg-block col-md-8 col-lg-8">
+                <div class="panel panel-success">
+                    <div class="panel-heading">YouTube Player</div>
+                    <div class="panel-body">
+                        <div id="player">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">YouTube Remote Control</div>
+                    <div class="panel-body">
+                        <div class="btn-group-justified">
+                            <a class="btn btn-success" onclick="playVideo()"><i class="fa fa-play fa-lg"></i><span class="visible-sm-inline">&emsp;Play</span></a>
+                            <a class="btn btn-danger" onclick="pauseVideo()"><i class="fa fa-pause fa-lg"></i><span class="visible-sm-inline">&emsp;Pause</span></a>
+                            <a class="btn btn-warning" onclick="stopVideo()"><i class="fa fa-stop fa-lg"></i><span class="visible-sm-inline">&emsp;Stop</span></a>
+                        </div>
+                        <br>
+                        <div class="btn-group-justified">
+                            <a class="btn btn-info" onclick="previousVideo()"><i class="fa fa-fast-backward fa-lg"></i><span class="visible-sm-inline">&emsp;Previous </span></a>
+                            <a class="btn btn-info" onclick="rewindVideo()"><i class="fa fa-backward fa-lg"></i><span class="visible-sm-inline">&emsp;Rewind </span></a>
+                            <a class="btn btn-primary" onclick="fastforwardVideo()"><i class="fa fa-forward fa-lg"></i><span class="visible-sm-inline">&emsp;Fast Forward </span></a>
+                            <a class="btn btn-primary" onclick="nextVideo()"><i class="fa fa-fast-forward fa-lg"></i><span class="visible-sm-inline">&emsp;Next </span></a>
+                        </div>
+                        <br>
+                        <div class="btn-group-justified">
+                            <a class="btn btn-warning" onclick="muteVideo()"><i class="fa fa-volume-off fa-lg"></i><span class="visible-sm-inline">&emsp;Mute </span></a>
+                            <a class="btn btn-warning" onclick="unmuteVideo()"><i class="fa fa-volume-up fa-lg"></i><span class="visible-sm-inline">&emsp;Unmute </span></a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="panel panel-warning">
+                    <div class="panel-heading">Playlist</div>
+                    <div class="panel-body">
+                        <ul id="videolist" class="list-group">
+
+                        </ul>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="url" placeholder="Enter Video ID or URL">
+                            <span class="input-group-btn">
+                              <a class="btn btn-warning"  onclick="getVideoIDFromURL()"><i class="fa fa-plus"></i></a>
+                            </span>
+                        </div>
+                        <br>
+                        <div class="btn-group-justified">
+                            <a class="btn btn-info" onclick="clearAll()"><span class="text-center">Clear All</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="../js/action.js"></script>
+<script src="../js/4140.js"></script>
+<script src="../js/player.js"></script>
+
+</html>
